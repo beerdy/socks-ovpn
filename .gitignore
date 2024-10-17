@@ -1,0 +1,13 @@
+# Main
+openvpn_client/config/*.crt
+openvpn_client/config/*.key
+openvpn_client/config/id_rsa.pub
+openvpn_client/config/config
+openvpn_client/config/config.ovpn
+
+# Mac
+.DS*
+._*
+
+# Dev
+.chpwd

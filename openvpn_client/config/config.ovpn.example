@@ -1,0 +1,31 @@
+client
+
+# tun/tap devcie
+
+dev tun0
+
+# protocol, according to server
+
+proto tcp
+
+pull
+# server address
+
+remote OVPN_SERVER OVPN_PORT
+
+# connection
+
+# comp-lzo
+resolv-retry 30
+nobind
+
+# persistent device and keys
+
+persist-key
+persist-tun
+
+# keys settings
+
+ca /vpn/config/ca.crt
+cert /vpn/config/docker.crt
+key /vpn/config/docker.key

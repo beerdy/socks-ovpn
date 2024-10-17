@@ -1,0 +1,44 @@
+services:
+  socks5_server:
+    build:
+      context: ./socks5_server
+    cap_add:
+      - net_admin
+    image: serjs/go-socks5-proxy
+    env_file: ./socks5_server/.env
+    ports:
+      - 1080:1080
+    command: tail -f /dev/null
+    # depends_on:
+    #   openvpn_client:
+    #     condition: service_healthy
+    networks:
+      - external_network
+      - internal_network
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+
+  openvpn_client:
+    build:
+      context: ./openvpn_client
+    cap_add:
+      - net_admin
+    devices:
+      - /dev/net/tun
+    volumes:
+      - ./openvpn_client/config:/vpn/config/
+    # healthcheck:
+    #   test: [ "CMD", "/vpn/config/check_openvpn.sh" ]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
+    networks:
+      - external_network
+      - internal_network
+
+networks:
+  internal_network:
+    internal: true
+  external_network:
+    internal: false
