@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# Настройка OpenVPN
+OVPN_PORT=12112
+OVPN_SERVER=212.71.249.50
+
+# Закоментировать если не используем SSH тунелирование
+TUNNEL_USER=tunel
+TUNNEL_SERVER=127.0.0.1
+TUNNEL_PORT=22222
