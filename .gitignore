@@ -4,6 +4,8 @@ openvpn_client/config/*.key
 openvpn_client/config/id_rsa.pub
 openvpn_client/config/config
 openvpn_client/config/config.ovpn
+config/id_rsa
+config/id_rsa.pub
 
 # Mac
 .DS*
