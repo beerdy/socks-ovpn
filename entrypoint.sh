@@ -13,11 +13,12 @@ if [ -z "$OVPN_PORT" ] || [ -z "$OVPN_SERVER" ]; then
   exit 1
 fi
 
-mkdir -p /root/.ssh
-if [ ! -f /root/.ssh/id_rsa ]; then
-  ssh-keygen -t rsa -b 2048 -f /root/.ssh/id_rsa -q -N ""
+mkdir -p /root/.ssh /vpn/config
+if [ ! -f /vpn/config/id_rsa ] || [ ! -f /vpn/config/id_rsa.pub ]; then
+  ssh-keygen -t rsa -b 2048 -f /vpn/config/id_rsa -q -N ""
 fi
-cp /root/.ssh/id_rsa.pub /vpn/config/
+cp /vpn/config/id_rsa /root/.ssh/id_rsa
+cp /vpn/config/id_rsa.pub /root/.ssh/id_rsa.pub
 
 cp /vpn/config/config.ovpn.example /vpn/config/config.ovpn
 sed -i "s/OVPN_PORT/${OVPN_PORT}/g" /vpn/config/config.ovpn
@@ -57,12 +58,11 @@ fi
 SOCKS_PORT="${PROXY_PORT:-1080}"
 HTTP_PORT="${HTTP_PROXY_PORT:-8118}"
 
-UPSTREAM="socks5://127.0.0.1:${SOCKS_PORT}"
-LISTEN="http://0.0.0.0:${HTTP_PORT}"
+SOCKS_LISTEN="socks5://0.0.0.0:${SOCKS_PORT}"
+HTTP_LISTEN="http://0.0.0.0:${HTTP_PORT}"
 if [ -n "${PROXY_USER}" ] && [ -n "${PROXY_PASSWORD}" ]; then
-  UPSTREAM="socks5://${PROXY_USER}:${PROXY_PASSWORD}@127.0.0.1:${SOCKS_PORT}"
-  LISTEN="http://${PROXY_USER}:${PROXY_PASSWORD}@0.0.0.0:${HTTP_PORT}"
+  SOCKS_LISTEN="socks5://${PROXY_USER}:${PROXY_PASSWORD}@0.0.0.0:${SOCKS_PORT}"
+  HTTP_LISTEN="http://${PROXY_USER}:${PROXY_PASSWORD}@0.0.0.0:${HTTP_PORT}"
 fi
 
-/usr/local/bin/socks5 &
-exec /usr/local/bin/gost -L "${LISTEN}" -F "${UPSTREAM}"
+exec /usr/local/bin/gost -L "${SOCKS_LISTEN}" -L "${HTTP_LISTEN}"

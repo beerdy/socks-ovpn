@@ -18,5 +18,4 @@ services:
     # environment:
     #   PROXY_USER: user
     #   PROXY_PASSWORD: pass
-    #   ALLOWED_IPS: 1.2.3.4,5.6.7.8
     restart: unless-stopped

@@ -1,8 +1,3 @@
-FROM golang:1.19-alpine AS builder
-WORKDIR /src
-COPY socks5_server/ ./
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-s' -o /out/socks5 .
-
 FROM alpine:3.19
 RUN apk --no-cache add openvpn iproute2 iptables openssh curl tzdata
 RUN mkdir -p /dev/net /run && mknod /dev/net/tun c 10 200 && chmod 600 /dev/net/tun
@@ -18,7 +13,6 @@ RUN set -e; \
   echo "${GOST_SHA}  /tmp/gost.tar.gz" | sha256sum -c -; \
   tar -xzf /tmp/gost.tar.gz -C /usr/local/bin gost; \
   rm -f /tmp/gost.tar.gz
-COPY --from=builder /out/socks5 /usr/local/bin/socks5
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 VOLUME [ "/vpn/config" ]
