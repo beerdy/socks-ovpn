@@ -1,31 +1,31 @@
 client
-
-# tun/tap devcie
-
 dev tun0
 
-# protocol, according to server
-
-proto tcp
-
-pull
-# server address
-
+proto tcp-client
 remote OVPN_SERVER OVPN_PORT
 
-# connection
-
-# comp-lzo
-resolv-retry 30
+pull
 nobind
-
-# persistent device and keys
 
 persist-key
 persist-tun
 
-# keys settings
-
 ca /vpn/config/ca.crt
 cert /vpn/config/docker.crt
 key /vpn/config/docker.key
+
+remote-cert-tls server
+
+# Бесконечные попытки переподключения
+resolv-retry infinite
+
+# Быстро пробовать заново
+connect-retry 3 15
+connect-timeout 8
+
+# Быстро замечать разрыв и перезапускать сессию
+ping 10
+ping-restart 18
+
+# Логи умеренные, но полезные
+verb 3

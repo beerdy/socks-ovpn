@@ -2,9 +2,28 @@
 
 # Настройка OpenVPN
 OVPN_PORT=12112
-OVPN_SERVER=212.71.249.50
 
-# Закоментировать если не используем SSH тунелирование
+
+# # server14.citykrepost.ru
+# OVPN_SERVER=130.255.10.213
+# TUNNEL_USER=tunel
+# TUNNEL_SERVER=127.0.0.1
+# TUNNEL_PORT=22
+
+# ## Belarus
+# OVPN_SERVER=62.182.102.167
+# TUNNEL_USER=root
+# TUNNEL_SERVER=127.0.0.1
+# TUNNEL_PORT=22
+
+## Direct London
+OVPN_SERVER=212.71.249.50
 TUNNEL_USER=tunel
 TUNNEL_SERVER=127.0.0.1
 TUNNEL_PORT=22222
+
+# ## TimeWeb
+# OVPN_SERVER=5.129.245.4
+# TUNNEL_USER=docker
+# TUNNEL_SERVER=127.0.0.1
+# TUNNEL_PORT=22222
